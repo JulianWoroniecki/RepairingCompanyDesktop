@@ -3,19 +3,21 @@ package com.example.repairingcompanyadmin;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class HelloController {
-
+public class AddCompanyController {
 
     private ResourceBundle bundle = ResourceBundle.getBundle("Language");
-
     @FXML
     private Button addCompanyButton;
+
+    @FXML
+    private Label addCompanyTitle;
 
     @FXML
     private Button addLocalisationButton;
@@ -83,13 +85,13 @@ public class HelloController {
     @FXML
     void langENG(ActionEvent event) throws IOException {
         Locale.setDefault(new Locale("ang"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("AddCompany.fxml",bundle.getString("aC"),bundle);
     }
 
     @FXML
     void langPL(ActionEvent event) throws IOException {
         Locale.setDefault(new Locale("pl"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("AddCompany.fxml",bundle.getString("aC"),bundle);
     }
 
     @FXML
@@ -111,5 +113,4 @@ public class HelloController {
     void viewVisits(ActionEvent event) throws IOException {
         StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
     }
-
 }

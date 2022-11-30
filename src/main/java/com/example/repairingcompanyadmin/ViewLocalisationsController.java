@@ -3,17 +3,16 @@ package com.example.repairingcompanyadmin;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleButton;
 
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class HelloController {
-
-
+public class ViewLocalisationsController {
     private ResourceBundle bundle = ResourceBundle.getBundle("Language");
-
     @FXML
     private Button addCompanyButton;
 
@@ -33,10 +32,16 @@ public class HelloController {
     private Button editVisitsButton;
 
     @FXML
-    private ToggleButton langENGButton;
+    private ToggleButton langENGButton1;
 
     @FXML
-    private ToggleButton langPLButton;
+    private ToggleButton langPLButton1;
+
+    @FXML
+    private TextArea localisationList;
+
+    @FXML
+    private Label localisationsListTitle;
 
     @FXML
     private Button viewCategoriesButton;
@@ -83,13 +88,13 @@ public class HelloController {
     @FXML
     void langENG(ActionEvent event) throws IOException {
         Locale.setDefault(new Locale("ang"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("viewLocalisations.fxml",bundle.getString("vL"),bundle);
     }
 
     @FXML
     void langPL(ActionEvent event) throws IOException {
         Locale.setDefault(new Locale("pl"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("viewLocalisations.fxml",bundle.getString("vL"),bundle);
     }
 
     @FXML

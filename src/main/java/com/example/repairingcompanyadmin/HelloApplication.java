@@ -6,15 +6,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 public class HelloApplication extends Application {
+
+    static ResourceBundle bundle = ResourceBundle.getBundle("Language");
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("DeleteCompany.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 700, 400);
-        stage.setTitle("RepairingCompanyAdmin");
-        stage.setScene(scene);
-        stage.show();
+        StageSetter.buildStage(stage,"MainMenu.fxml","Main Menu",bundle);
     }
 
     public static void main(String[] args) {

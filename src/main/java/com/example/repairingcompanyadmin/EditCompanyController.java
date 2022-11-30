@@ -2,35 +2,63 @@ package com.example.repairingcompanyadmin;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class HelloController {
-
+public class EditCompanyController {
 
     private ResourceBundle bundle = ResourceBundle.getBundle("Language");
-
     @FXML
     private Button addCompanyButton;
 
     @FXML
-    private Button addLocalisationButton;
+    private Button addLocalisationButton1;
+    @FXML
+    private Button deleteCompanyButton;
+    @FXML
+    private ComboBox<String> companiesList;
+    @FXML
+    private Label companyDescription;
 
     @FXML
-    private Button editCategoriesButton;
+    private Label companyEmail;
 
     @FXML
-    private Button editCompanyButton;
+    private Label companyLocation;
 
     @FXML
-    private Button editLocalisationButton;
+    private Label companyName;
 
     @FXML
-    private Button editVisitsButton;
+    private Label companyNumber;
+
+    @FXML
+    private Label companyStreet;
+
+    @FXML
+    private Label companyTitle;
+
+    @FXML
+    private TextField descriptionInput;
+
+    @FXML
+    private Button editCategoriesButton1;
+
+    @FXML
+    private Button editCompanyButton1;
+
+    @FXML
+    private Button editLocalisationButton1;
+
+    @FXML
+    private Button editVisitsButton1;
+
+    @FXML
+    private TextField emailInput;
 
     @FXML
     private ToggleButton langENGButton;
@@ -39,16 +67,31 @@ public class HelloController {
     private ToggleButton langPLButton;
 
     @FXML
-    private Button viewCategoriesButton;
+    private VBox locationList;
+
+    @FXML
+    private TextField nameInput;
+
+    @FXML
+    private TextField phoneInput;
+
+    @FXML
+    private Button saveCompanyChangesButton;
+
+    @FXML
+    private TextField streetInput;
+
+    @FXML
+    private Button viewCategoriesButton1;
 
     @FXML
     private Button viewCompaniesButton;
 
     @FXML
-    private Button viewLocalisationsButton;
+    private Button viewLocalisationsButton1;
 
     @FXML
-    private Button viewVisitsButton;
+    private Button viewVisitsButton1;
 
     @FXML
     void addCompany(ActionEvent event) throws IOException {
@@ -58,6 +101,11 @@ public class HelloController {
     @FXML
     void addLocalisation(ActionEvent event) throws IOException {
         StageSetter.buildStage("AddLocalisation.fxml",bundle.getString("aL"),bundle);
+    }
+
+    @FXML
+    void deleteCompany(ActionEvent event) {
+
     }
 
     @FXML
@@ -83,13 +131,13 @@ public class HelloController {
     @FXML
     void langENG(ActionEvent event) throws IOException {
         Locale.setDefault(new Locale("ang"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("EditCompany.fxml",bundle.getString("eCmp"),bundle);
     }
 
     @FXML
     void langPL(ActionEvent event) throws IOException {
         Locale.setDefault(new Locale("pl"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("EditCompany.fxml",bundle.getString("eCmp"),bundle);
     }
 
     @FXML

@@ -2,23 +2,25 @@ package com.example.repairingcompanyadmin;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class HelloController {
-
-
+public class EditVisitsController {
     private ResourceBundle bundle = ResourceBundle.getBundle("Language");
-
     @FXML
     private Button addCompanyButton;
 
     @FXML
     private Button addLocalisationButton;
+
+    @FXML
+    private DatePicker dateInput;
+
+    @FXML
+    private TextField descriptionInput;
 
     @FXML
     private Button editCategoriesButton;
@@ -33,10 +35,24 @@ public class HelloController {
     private Button editVisitsButton;
 
     @FXML
-    private ToggleButton langENGButton;
+    private Label editVisitsTitle;
 
     @FXML
-    private ToggleButton langPLButton;
+    private ComboBox<String> visitsList;
+    @FXML
+    private DatePicker endingInput;
+
+    @FXML
+    private ToggleButton langENGButton1;
+
+    @FXML
+    private ToggleButton langPLButton1;
+
+    @FXML
+    private Button saveVisitChangesButton;
+
+    @FXML
+    private DatePicker startingInput;
 
     @FXML
     private Button viewCategoriesButton;
@@ -49,6 +65,22 @@ public class HelloController {
 
     @FXML
     private Button viewVisitsButton;
+
+    @FXML
+    private Button deleteVisitButton;
+
+    @FXML
+    private Label visitDate;
+
+    @FXML
+    private Label visitDescription;
+
+    @FXML
+    private Label visitEnding;
+
+    @FXML
+    private Label visitStarting;
+
 
     @FXML
     void addCompany(ActionEvent event) throws IOException {
@@ -83,13 +115,13 @@ public class HelloController {
     @FXML
     void langENG(ActionEvent event) throws IOException {
         Locale.setDefault(new Locale("ang"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("EditVisits.fxml",bundle.getString("eV"),bundle);
     }
 
     @FXML
     void langPL(ActionEvent event) throws IOException {
         Locale.setDefault(new Locale("pl"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("EditVisits.fxml",bundle.getString("eV"),bundle);
     }
 
     @FXML
@@ -111,5 +143,12 @@ public class HelloController {
     void viewVisits(ActionEvent event) throws IOException {
         StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
     }
+    @FXML
+    void deleteVisit(ActionEvent event) {
 
+    }
+    @FXML
+    void saveVisitChanges(ActionEvent event) {
+
+    }
 }
