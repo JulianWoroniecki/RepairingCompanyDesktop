@@ -7,6 +7,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -112,5 +117,23 @@ public class AddCompanyController {
     @FXML
     void viewVisits(ActionEvent event) throws IOException {
         StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
+    }
+
+    @FXML
+    void submitCompany(ActionEvent event) throws IOException {
+        URL url = new URL("http://localhost:8080/api/v1/company/add");
+        HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+        httpCon.setRequestProperty("Content-Type", "application/json; charset=utf8");
+        httpCon.setDoOutput(true);
+        httpCon.setRequestMethod("POST");
+        OutputStream os = httpCon.getOutputStream();
+        OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8);
+        // TODO: replace values with property getters.
+        osw.write("{\"companyName\": \"test\", \"description\": \"testDesc\", \"mail\": \"testMail\", \"phoneNumber\": \"6457456\", \"street\": \"testStreet\", \"locationId\": 3}");
+        osw.flush();
+        osw.close();
+        os.close();
+        int status = httpCon.getResponseCode();
+        System.out.println(status);
     }
 }
