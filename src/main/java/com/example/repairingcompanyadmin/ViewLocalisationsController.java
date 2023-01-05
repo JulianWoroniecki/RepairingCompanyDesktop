@@ -1,5 +1,7 @@
 package com.example.repairingcompanyadmin;
 
+import com.example.repairingcompanyadmin.dto.Location;
+import com.example.repairingcompanyadmin.dto.VisitCategory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -115,6 +117,13 @@ public class ViewLocalisationsController {
     @FXML
     void viewVisits(ActionEvent event) throws IOException {
         StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
+    }
+
+    @FXML
+    void initialize() throws IOException {
+        JSONApi api = new JSONApi("http://localhost:8080/api/v1/location/all", "GET", Location[].class);
+        Location[] locations = (Location[]) api.readValue();
+        localisationList.setText(api.prettifyJSON(locations));
     }
 
 }
