@@ -1,15 +1,24 @@
 package com.example.repairingcompanyadmin;
 
+import com.example.repairingcompanyadmin.dto.Location;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class HelloController {
-
-
+public class AddLocalisationController {
     private final ResourceBundle bundle = ResourceBundle.getBundle("Language");
+    @FXML
+    private TextField cityInput;
 
+    @FXML
+    private TextField voivodeshipInput;
 
     @FXML
     void addCompany() throws IOException {
@@ -39,13 +48,13 @@ public class HelloController {
     @FXML
     void langENG() throws IOException {
         Locale.setDefault(new Locale("en_US"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("AddLocalisation.fxml",bundle.getString("aL"),bundle);
     }
 
     @FXML
     void langPL() throws IOException {
         Locale.setDefault(new Locale("pl"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("AddLocalisation.fxml",bundle.getString("aL"),bundle);
     }
 
     @FXML
@@ -66,6 +75,12 @@ public class HelloController {
     @FXML
     void viewVisits() throws IOException {
         StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
+    }
+    @FXML
+    void submitLocation() throws IOException {
+        Location location = new Location(0L,cityInput.getText(),voivodeshipInput.getText());
+        Api api = new Api();
+        api.update("http://localhost:8080/api/v1/location/add","PUT",location.toAddString());
     }
 
 }

@@ -1,14 +1,16 @@
 package com.example.repairingcompanyadmin;
 
+import com.example.repairingcompanyadmin.dto.VisitCategory;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class HelloController {
-
-
+public class ViewCategoriesController {
     private final ResourceBundle bundle = ResourceBundle.getBundle("Language");
+    @FXML
+    private TextArea categoriesList;
 
 
     @FXML
@@ -19,6 +21,11 @@ public class HelloController {
     @FXML
     void addLocalisation() throws IOException {
         StageSetter.buildStage("AddLocalisation.fxml",bundle.getString("aL"),bundle);
+    }
+
+    @FXML
+    void editCategories() throws IOException {
+        StageSetter.buildStage("EditCategories.fxml",bundle.getString("eCtg"),bundle);
     }
 
     @FXML
@@ -39,13 +46,13 @@ public class HelloController {
     @FXML
     void langENG() throws IOException {
         Locale.setDefault(new Locale("en_US"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("viewCategories.fxml",bundle.getString("vCtg"),bundle);
     }
 
     @FXML
     void langPL() throws IOException {
         Locale.setDefault(new Locale("pl"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("viewCategories.fxml",bundle.getString("vCtg"),bundle);
     }
 
     @FXML
@@ -66,6 +73,17 @@ public class HelloController {
     @FXML
     void viewVisits() throws IOException {
         StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
+    }
+
+    @FXML
+    void initialize() throws IOException {
+        JSONApi api = new JSONApi("http://localhost:8080/api/v1/visit/category/all", "GET", VisitCategory[].class);
+        VisitCategory[] visitCategories = (VisitCategory[]) api.readValue();
+//        categoriesList.setText(api.prettifyJSON(visitCategories));
+        for (VisitCategory category : visitCategories){
+            categoriesList.appendText("opis: " + category.humanReadableLabel() + "\n czas trwania: " + category.durationHours() + "h \n \n");
+        }
+        categoriesList.setEditable(false);
     }
 
 }

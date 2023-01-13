@@ -1,16 +1,43 @@
 package com.example.repairingcompanyadmin;
 
+import com.example.repairingcompanyadmin.dto.Company;
+import com.example.repairingcompanyadmin.dto.Location;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
+
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class HelloController {
-
+public class AddCompanyController {
 
     private final ResourceBundle bundle = ResourceBundle.getBundle("Language");
+    @FXML
+    private ComboBox<String> locations;
+
+    @FXML
+    private TextField descriptionInput;
 
 
+    @FXML
+    private TextField emailInput;
+
+    @FXML
+    private TextField nameInput;
+
+    @FXML
+    private TextField phoneInput;
+
+    @FXML
+    private TextField sInput;
+
+    Location[] locationsList;
     @FXML
     void addCompany() throws IOException {
         StageSetter.buildStage("AddCompany.fxml",bundle.getString("aC"),bundle);
@@ -39,13 +66,13 @@ public class HelloController {
     @FXML
     void langENG() throws IOException {
         Locale.setDefault(new Locale("en_US"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("AddCompany.fxml",bundle.getString("aC"),bundle);
     }
 
     @FXML
     void langPL() throws IOException {
         Locale.setDefault(new Locale("pl"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("AddCompany.fxml",bundle.getString("aC"),bundle);
     }
 
     @FXML
@@ -68,4 +95,18 @@ public class HelloController {
         StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
     }
 
+    @FXML
+    void initialize() throws IOException {
+        JSONApi api = new JSONApi("http://localhost:8080/api/v1/location/all","GET", Location[].class);
+        locationsList = (Location[]) api.readValue();
+        for (Location location : locationsList){
+            locations.getItems().add(location.city());
+        }
+    }
+    @FXML
+    void submitCompany() throws IOException {
+        Company company = new Company(null,nameInput.getText(),descriptionInput.getText(),null,locationsList[locations.getSelectionModel().getSelectedIndex()],phoneInput.getText(),sInput.getText(),emailInput.getText());
+        Api api = new Api();
+        api.update("http://localhost:8080/api/v1/company/add","POST",company.toStringWithoutId());
+    }
 }

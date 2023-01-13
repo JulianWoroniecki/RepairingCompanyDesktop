@@ -1,15 +1,17 @@
 package com.example.repairingcompanyadmin;
 
+import com.example.repairingcompanyadmin.dto.Location;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class HelloController {
-
-
+public class ViewLocalisationsController {
     private final ResourceBundle bundle = ResourceBundle.getBundle("Language");
 
+    @FXML
+    private TextArea localisationList;
 
     @FXML
     void addCompany() throws IOException {
@@ -19,6 +21,11 @@ public class HelloController {
     @FXML
     void addLocalisation() throws IOException {
         StageSetter.buildStage("AddLocalisation.fxml",bundle.getString("aL"),bundle);
+    }
+
+    @FXML
+    void editCategories() throws IOException {
+        StageSetter.buildStage("EditCategories.fxml",bundle.getString("eCtg"),bundle);
     }
 
     @FXML
@@ -39,13 +46,13 @@ public class HelloController {
     @FXML
     void langENG() throws IOException {
         Locale.setDefault(new Locale("en_US"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("viewLocalisations.fxml",bundle.getString("vL"),bundle);
     }
 
     @FXML
     void langPL() throws IOException {
         Locale.setDefault(new Locale("pl"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("viewLocalisations.fxml",bundle.getString("vL"),bundle);
     }
 
     @FXML
@@ -66,6 +73,19 @@ public class HelloController {
     @FXML
     void viewVisits() throws IOException {
         StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
+    }
+
+    @FXML
+    void initialize() throws IOException {
+        JSONApi api = new JSONApi("http://localhost:8080/api/v1/location/all", "GET", Location[].class);
+        Location[] locations = (Location[]) api.readValue();
+        for (Location location : locations){
+            localisationList.appendText(location.id().toString() + ". " +
+                    location.city() + "\n" +
+                    bundle.getString("vvship") + ": " + location.voivodeship() + "\n\n"
+            );
+        }
+        localisationList.setEditable(false);
     }
 
 }

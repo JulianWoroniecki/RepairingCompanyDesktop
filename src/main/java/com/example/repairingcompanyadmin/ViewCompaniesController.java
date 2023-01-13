@@ -1,15 +1,17 @@
 package com.example.repairingcompanyadmin;
 
+import com.example.repairingcompanyadmin.dto.Company;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class HelloController {
-
-
+public class ViewCompaniesController {
     private final ResourceBundle bundle = ResourceBundle.getBundle("Language");
 
+    @FXML
+    private TextArea companiesList;
 
     @FXML
     void addCompany() throws IOException {
@@ -39,13 +41,13 @@ public class HelloController {
     @FXML
     void langENG() throws IOException {
         Locale.setDefault(new Locale("en_US"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("viewCompanies.fxml",bundle.getString("vCmp"),bundle);
     }
 
     @FXML
     void langPL() throws IOException {
         Locale.setDefault(new Locale("pl"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("viewCompanies.fxml",bundle.getString("vCmp"),bundle);
     }
 
     @FXML
@@ -68,4 +70,20 @@ public class HelloController {
         StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
     }
 
+    @FXML
+    void initialize() throws IOException {
+        JSONApi api = new JSONApi("http://localhost:8080/api/v1/company/all", "GET", Company[].class);
+        Company[] companies = (Company[]) api.readValue();
+        for (Company company : companies){
+            companiesList.appendText(company.id().toString() + ". " +
+                    company.companyName() + "\n" +
+                    bundle.getString("dsc") + ": " + company.description() + "\n" +
+                    bundle.getString("city") + ": " + company.location().city() + "\n"+
+                    bundle.getString("street") + ": "+ company.street() + "\n" +
+                    bundle.getString("phone") + ": " + company.phoneNumber() + "\n" +
+                    bundle.getString("email") + ": "+ company.mail() + "\n\n"
+                    );
+        }
+        companiesList.setEditable(false);
+    }
 }

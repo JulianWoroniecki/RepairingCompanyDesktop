@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="menu" stylesheets="@AddCompany.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.repairingcompanyadmin.AddCompanyController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="menu" stylesheets="@AddCompany.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.repairingcompanyadmin.EditCompanyController">
    <children>
       <SplitPane VBox.vgrow="ALWAYS">
          <items>
@@ -79,7 +79,7 @@
                        </HBox>
                     </children>
                  </VBox>
-                 <GridPane alignment="CENTER" maxHeight="650.0" maxWidth="1.7976931348623157E308">
+                  <GridPane alignment="CENTER" maxHeight="650.0" maxWidth="1.7976931348623157E308">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="351.0" minWidth="10.0" prefWidth="344.0" />
                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="342.0" minWidth="10.0" prefWidth="332.0" />
@@ -96,10 +96,11 @@
                      <children>
                         <AnchorPane maxWidth="1.7976931348623157E308" GridPane.columnSpan="2" GridPane.halignment="CENTER">
                            <children>
-                              <Label fx:id="addCompanyTitle" alignment="CENTER" layoutX="324.0" layoutY="90.0" minWidth="100.0" prefHeight="117.0" prefWidth="626.0" text="%aC" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <Label fx:id="companyTitle" alignment="CENTER" layoutY="14.0" minWidth="100.0" prefHeight="26.0" prefWidth="626.0" text="%eCmp" AnchorPane.bottomAnchor="67.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="14.0">
                                  <font>
                                     <Font name="Bodoni MT" size="24.0" />
                                  </font></Label>
+                              <ComboBox fx:id="companiesList" layoutX="10.0" layoutY="63.0" onAction="#loadData" prefHeight="26.0" prefWidth="606.0" promptText="%chCmp" />
                            </children>
                            <GridPane.margin>
                               <Insets />
@@ -109,7 +110,7 @@
                            <children>
                               <VBox layoutX="29.0" layoutY="-66.0" minWidth="150.0" prefHeight="134.0" prefWidth="319.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                                  <children>
-                                    <Label minWidth="100.0" text="%nm">
+                                    <Label fx:id="companyName" minWidth="100.0" text="%nm">
                                        <VBox.margin>
                                           <Insets bottom="3.0" left="5.0" top="5.0" />
                                        </VBox.margin>
@@ -133,7 +134,7 @@
                            <children>
                               <VBox minWidth="150.0" prefHeight="134.0" prefWidth="319.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                                  <children>
-                                    <Label minWidth="100.0" text="%phone">
+                                    <Label fx:id="companyNumber" minWidth="100.0" text="%phone">
                                        <VBox.margin>
                                           <Insets bottom="3.0" left="5.0" top="5.0" />
                                        </VBox.margin>
@@ -157,7 +158,7 @@
                            <children>
                               <VBox minWidth="150.0" prefHeight="134.0" prefWidth="626.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                                  <children>
-                                    <Label minWidth="100.0" text="%email">
+                                    <Label fx:id="companyEmail" minWidth="100.0" text="%email">
                                        <VBox.margin>
                                           <Insets bottom="3.0" left="5.0" top="5.0" />
                                        </VBox.margin>
@@ -181,7 +182,7 @@
                            <children>
                               <VBox minWidth="150.0" prefHeight="134.0" prefWidth="319.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                                  <children>
-                                    <Label minWidth="100.0" text="%dsc">
+                                    <Label fx:id="companyDescription" minWidth="100.0" text="%dsc">
                                        <VBox.margin>
                                           <Insets bottom="3.0" left="5.0" top="5.0" />
                                        </VBox.margin>
@@ -205,7 +206,7 @@
                            <children>
                               <VBox minWidth="150.0" prefHeight="134.0" prefWidth="626.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                                  <children>
-                                    <Label minWidth="100.0" text="%street">
+                                    <Label fx:id="companyStreet" minWidth="100.0" text="%street">
                                        <VBox.margin>
                                           <Insets bottom="3.0" left="5.0" top="5.0" />
                                        </VBox.margin>
@@ -213,7 +214,7 @@
                                           <Insets top="5.0" />
                                        </padding>
                                     </Label>
-                                    <TextField fx:id="sInput" minWidth="15.0">
+                                    <TextField fx:id="streetInput" minWidth="15.0">
                                        <VBox.margin>
                                           <Insets left="5.0" right="15.0" />
                                        </VBox.margin>
@@ -227,9 +228,9 @@
                         </AnchorPane>
                         <AnchorPane maxWidth="1.7976931348623157E308" minWidth="150.0" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
                            <children>
-                              <VBox minWidth="150.0" prefHeight="134.0" prefWidth="626.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+                              <VBox fx:id="locationList" minWidth="150.0" prefHeight="134.0" prefWidth="626.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                                  <children>
-                                    <Label minWidth="100.0" text="%city">
+                                    <Label fx:id="companyLocation" minWidth="100.0" text="%loc">
                                        <VBox.margin>
                                           <Insets bottom="3.0" left="5.0" top="5.0" />
                                        </VBox.margin>
@@ -237,7 +238,7 @@
                                           <Insets top="5.0" />
                                        </padding>
                                     </Label>
-                                    <ComboBox fx:id="locations" prefHeight="25.0" prefWidth="290.0" />
+                                    <ComboBox fx:id="companyListView" prefHeight="25.0" prefWidth="288.0" />
                                  </children>
                               </VBox>
                            </children>
@@ -245,22 +246,14 @@
                               <Insets />
                            </GridPane.margin>
                         </AnchorPane>
-                        <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="5">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-                        </AnchorPane>
                         <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                            <children>
-                              <VBox layoutX="104.0" layoutY="-61.0" prefHeight="139.0" prefWidth="307.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+                              <HBox prefHeight="42.0" prefWidth="307.0">
                                  <children>
-                                    <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="15.0" mnemonicParsing="false" onAction="#submitCompany" text="%ad">
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" left="5.0" right="15.0" top="20.0" />
-                                       </VBox.margin>
-                                    </Button>
+                                    <Button fx:id="deleteCompanyButton" mnemonicParsing="false" onAction="#deleteCompany" prefHeight="42.0" prefWidth="191.0" text="%del" />
+                                    <Button fx:id="saveCompanyChangesButton" maxHeight="1.7976931348623157E308" minHeight="33.0" minWidth="15.0" mnemonicParsing="false" onAction="#saveChangesToCompany" prefHeight="41.0" prefWidth="178.0" text="%schanges" />
                                  </children>
-                              </VBox>
+                              </HBox>
                            </children>
                         </AnchorPane>
                      </children>

@@ -1,15 +1,18 @@
 package com.example.repairingcompanyadmin;
 
+import com.example.repairingcompanyadmin.dto.Company;
+import com.example.repairingcompanyadmin.dto.Visit;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
+
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class HelloController {
-
-
+public class ViewVisitsController {
     private final ResourceBundle bundle = ResourceBundle.getBundle("Language");
-
+    @FXML
+    private TextArea visitsList;
 
     @FXML
     void addCompany() throws IOException {
@@ -39,13 +42,13 @@ public class HelloController {
     @FXML
     void langENG() throws IOException {
         Locale.setDefault(new Locale("en_US"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
     }
 
     @FXML
     void langPL() throws IOException {
         Locale.setDefault(new Locale("pl"));
-        StageSetter.buildStage("MainMenu.fxml","Menu",bundle);
+        StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
     }
 
     @FXML
@@ -66,6 +69,24 @@ public class HelloController {
     @FXML
     void viewVisits() throws IOException {
         StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
+    }
+
+    @FXML
+    void initialize() throws IOException {
+        JSONApi api = new JSONApi("http://localhost:8080/api/v1/visit/all", "GET", Visit[].class);
+        Visit[] visits = (Visit[]) api.readValue();
+        for (Visit visit : visits){
+            JSONApi api2 = new JSONApi("http://localhost:8080/api/v1/company/"+visit.id(), "GET", Company.class);
+            Company company = (Company) api2.readValue();
+            visitsList.appendText(visit.id().toString() + ". " +
+                    visit.description() + "\n" +
+                    bundle.getString("date") + ": "+ visit.date() + "\n" +
+                    bundle.getString("cmp") + ": "+ company.companyName() + "\n" +
+                    bundle.getString("sDate") + ": "+ visit.startTime() + "\n" +
+                    bundle.getString("eDate") + ": "+ visit.endTime() + "\n\n"
+            );
+        }
+        visitsList.setEditable(false);
     }
 
 }
