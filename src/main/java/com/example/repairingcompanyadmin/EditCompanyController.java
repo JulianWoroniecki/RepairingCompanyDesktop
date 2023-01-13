@@ -139,6 +139,7 @@ public class EditCompanyController {
     @FXML
     void initialize() throws IOException {
         load();
+        nameInput.setEditable(false);
     }
     @FXML
     void loadData() {
@@ -159,18 +160,8 @@ public class EditCompanyController {
     void saveChangesToCompany() throws IOException {
         int indeks=companiesList.getSelectionModel().getSelectedIndex();
         Company company1=new Company(companies[indeks].id(),nameInput.getText(),descriptionInput.getText(),companies[indeks].visits(),companies[indeks].location(),phoneInput.getText(),streetInput.getText(),emailInput.getText());
-        URL url = new URL("http://localhost:8080/api/v1/company/update");
-        HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
-        httpCon.setRequestProperty("Content-Type", "application/json; charset=utf8");
-        httpCon.setDoOutput(true);
-        httpCon.setRequestMethod("PUT");
-        OutputStream os = httpCon.getOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8);
+        Api api = new Api();
+        api.update("http://localhost:8080/api/v1/company/update","PUT",company1.toString());
         System.out.println(company1);
-        System.out.println(httpCon.getResponseCode());
-        osw.write(company1.toString());
-        osw.flush();
-        osw.close();
-        os.close();
     }
 }

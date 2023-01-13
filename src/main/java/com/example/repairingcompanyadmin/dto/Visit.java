@@ -16,14 +16,14 @@ public record Visit(
 ) {
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Visit{");
-        sb.append("id=").append(id);
-        sb.append(", company=").append(company);
-        sb.append(", date=").append(date);
-        sb.append(", startTime=").append(startTime);
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", category=").append(category);
-        sb.append(", endTime=").append(endTime);
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"visitId\": ").append(id);
+        sb.append(", \"date\": \"").append(date).append("\"");
+        sb.append(", \"description\": \"").append(description).append('\"');
+        sb.append(", \"endTime\": \"").append(endTime).append('\"');
+        sb.append(", \"startTime\": \"").append(startTime).append('\"');
+        sb.append(", \"visitCategoryId\": ").append(category.id());
+        sb.append(", \"companyId\": ").append(company.id());
         sb.append('}');
         return sb.toString();
     }

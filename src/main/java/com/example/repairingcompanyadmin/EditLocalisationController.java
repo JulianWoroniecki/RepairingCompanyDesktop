@@ -103,18 +103,8 @@ public class EditLocalisationController {
     void saveLocalisationChanges() throws IOException {
         int indeks=localisationsList.getSelectionModel().getSelectedIndex();
         Location location1=new Location(locations[indeks].id(),cityInput.getText(),vvshipInput.getText());
-        URL url = new URL("http://localhost:8080/api/v1/location/update");
-        HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
-        httpCon.setRequestProperty("Content-Type", "application/json; charset=utf8");
-        httpCon.setDoOutput(true);
-        httpCon.setRequestMethod("PUT");
-        OutputStream os = httpCon.getOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8);
-        osw.write(location1.toAddString());
-        osw.flush();
-        osw.close();
-        os.close();
-        System.out.println(httpCon.getResponseCode());
+        Api api = new Api();
+        api.update("http://localhost:8080/api/v1/location/update","PUT",location1.toAddString());
     }
     private void load() throws IOException {
         clear();
@@ -133,6 +123,7 @@ public class EditLocalisationController {
     @FXML
     void initialize() throws IOException {
         load();
+        vvshipInput.setEditable(false);
     }
     @FXML
     void loadData(){

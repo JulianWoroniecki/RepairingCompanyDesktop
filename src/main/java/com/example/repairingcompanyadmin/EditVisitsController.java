@@ -1,9 +1,12 @@
 package com.example.repairingcompanyadmin;
 
+import com.example.repairingcompanyadmin.dto.Company;
 import com.example.repairingcompanyadmin.dto.Visit;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -37,10 +40,6 @@ public class EditVisitsController {
         StageSetter.buildStage("AddLocalisation.fxml",bundle.getString("aL"),bundle);
     }
 
-    @FXML
-    void editCategories() throws IOException {
-        StageSetter.buildStage("EditCategories.fxml",bundle.getString("eCtg"),bundle);
-    }
 
     @FXML
     void editCompany() throws IOException {
@@ -101,8 +100,13 @@ public class EditVisitsController {
         }
     }
     @FXML
-    void saveVisitChanges() {
-
+    void saveVisitChanges() throws IOException {
+        int indeks=visitsList.getSelectionModel().getSelectedIndex();
+        JSONApi api2 = new JSONApi("http://localhost:8080/api/v1/company/"+visit.id(), "GET", Company.class);
+        Company company = (Company) api2.readValue();
+        Visit visit = new Visit(visits[indeks].id(),company,visits[indeks].date(), LocalTime.parse(startingInput.getText()),descriptionInput.getText(),visits[indeks].category(),LocalTime.parse(endingInput.getText()));
+        Api api = new Api();
+        api.update("http://localhost:8080/api/v1/visit/update","PUT",visit.toString());
     }
     private void load() throws IOException {
         clear();
@@ -124,7 +128,10 @@ public class EditVisitsController {
     }
     @FXML
     void initialize() throws IOException {
-      load();
+        load();
+        descriptionInput.setEditable(false);
+        dateInput.setEditable(false);
+        System.out.println(visits[0].description());
     }
     @FXML
     void loadData(){

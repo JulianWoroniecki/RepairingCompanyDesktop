@@ -78,20 +78,9 @@ public class AddLocalisationController {
     }
     @FXML
     void submitLocation() throws IOException {
-        URL url = new URL("http://localhost:8080/api/v1/location/add");
         Location location = new Location(0L,cityInput.getText(),voivodeshipInput.getText());
-        HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
-        httpCon.setRequestProperty("Content-Type", "application/json; charset=utf8");
-        httpCon.setDoOutput(true);
-        httpCon.setRequestMethod("POST");
-        OutputStream os = httpCon.getOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8);
-        osw.write(location.toAddString());
-        osw.flush();
-        osw.close();
-        os.close();
-        int status = httpCon.getResponseCode();
-        System.out.println(status);
+        Api api = new Api();
+        api.update("http://localhost:8080/api/v1/location/add","PUT",location.toAddString());
     }
 
 }

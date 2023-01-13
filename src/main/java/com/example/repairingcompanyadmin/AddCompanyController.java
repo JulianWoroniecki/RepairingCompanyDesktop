@@ -105,18 +105,8 @@ public class AddCompanyController {
     }
     @FXML
     void submitCompany() throws IOException {
-        URL url = new URL("http://localhost:8080/api/v1/company/add");
         Company company = new Company(null,nameInput.getText(),descriptionInput.getText(),null,locationsList[locations.getSelectionModel().getSelectedIndex()],phoneInput.getText(),sInput.getText(),emailInput.getText());
-        HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
-        httpCon.setRequestProperty("Content-Type", "application/json; charset=utf8");
-        httpCon.setDoOutput(true);
-        httpCon.setRequestMethod("POST");
-        OutputStream os = httpCon.getOutputStream();
-        OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8);
-        osw.write(company.toStringWithoutId());
-        osw.flush();
-        osw.close();
-        os.close();
-        System.out.println(httpCon.getResponseCode());
+        Api api = new Api();
+        api.update("http://localhost:8080/api/v1/company/add","POST",company.toStringWithoutId());
     }
 }
