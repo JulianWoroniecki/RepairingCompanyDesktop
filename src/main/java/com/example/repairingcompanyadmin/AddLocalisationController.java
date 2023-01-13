@@ -1,129 +1,97 @@
 package com.example.repairingcompanyadmin;
 
-import javafx.event.ActionEvent;
+import com.example.repairingcompanyadmin.dto.Location;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
-
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class AddLocalisationController {
-    private ResourceBundle bundle = ResourceBundle.getBundle("Language");
-    @FXML
-    private Button addCompanyButton;
-
-    @FXML
-    private Button addLocalisationButton;
-
-    @FXML
-    private Label addLocalisationTitle;
-
+    private final ResourceBundle bundle = ResourceBundle.getBundle("Language");
     @FXML
     private TextField cityInput;
-
-    @FXML
-    private Label companyCity;
-
-    @FXML
-    private Label companyVoivodeship;
-
-    @FXML
-    private Button editCategoriesButton;
-
-    @FXML
-    private Button editCompanyButton;
-
-    @FXML
-    private Button editLocalisationButton;
-
-    @FXML
-    private Button editVisitsButton;
-
-    @FXML
-    private ToggleButton langENGButton1;
-
-    @FXML
-    private ToggleButton langPLButton1;
-
-    @FXML
-    private Button viewCategoriesButton;
-
-    @FXML
-    private Button viewCompaniesButton;
-
-    @FXML
-    private Button viewLocalisationsButton;
-
-    @FXML
-    private Button viewVisitsButton;
 
     @FXML
     private TextField voivodeshipInput;
 
     @FXML
-    void addCompany(ActionEvent event) throws IOException {
+    void addCompany() throws IOException {
         StageSetter.buildStage("AddCompany.fxml",bundle.getString("aC"),bundle);
     }
 
     @FXML
-    void addLocalisation(ActionEvent event) throws IOException {
+    void addLocalisation() throws IOException {
         StageSetter.buildStage("AddLocalisation.fxml",bundle.getString("aL"),bundle);
     }
 
     @FXML
-    void editCategories(ActionEvent event) throws IOException {
-        StageSetter.buildStage("EditCategories.fxml",bundle.getString("eCtg"),bundle);
-    }
-
-    @FXML
-    void editCompany(ActionEvent event) throws IOException {
+    void editCompany() throws IOException {
         StageSetter.buildStage("EditCompany.fxml",bundle.getString("eCmp"),bundle);
     }
 
     @FXML
-    void editLocalisation(ActionEvent event) throws IOException {
+    void editLocalisation() throws IOException {
         StageSetter.buildStage("EditLocalisation.fxml",bundle.getString("eL"),bundle);
     }
 
     @FXML
-    void editVisits(ActionEvent event) throws IOException {
+    void editVisits() throws IOException {
         StageSetter.buildStage("EditVisits.fxml",bundle.getString("eV"),bundle);
     }
 
     @FXML
-    void langENG(ActionEvent event) throws IOException {
-        Locale.setDefault(new Locale("ang"));
+    void langENG() throws IOException {
+        Locale.setDefault(new Locale("en_US"));
         StageSetter.buildStage("AddLocalisation.fxml",bundle.getString("aL"),bundle);
     }
 
     @FXML
-    void langPL(ActionEvent event) throws IOException {
+    void langPL() throws IOException {
         Locale.setDefault(new Locale("pl"));
         StageSetter.buildStage("AddLocalisation.fxml",bundle.getString("aL"),bundle);
     }
 
     @FXML
-    void viewCategories(ActionEvent event) throws IOException {
+    void viewCategories() throws IOException {
         StageSetter.buildStage("viewCategories.fxml",bundle.getString("vCtg"),bundle);
     }
 
     @FXML
-    void viewCompanies(ActionEvent event) throws IOException {
+    void viewCompanies() throws IOException {
         StageSetter.buildStage("viewCompanies.fxml",bundle.getString("vCmp"),bundle);
     }
 
     @FXML
-    void viewLocalisations(ActionEvent event) throws IOException {
+    void viewLocalisations() throws IOException {
         StageSetter.buildStage("viewLocalisations.fxml",bundle.getString("vL"),bundle);
     }
 
     @FXML
-    void viewVisits(ActionEvent event) throws IOException {
+    void viewVisits() throws IOException {
         StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
+    }
+    @FXML
+    void submitLocation() throws IOException {
+        URL url = new URL("http://localhost:8080/api/v1/location/add");
+        Location location = new Location(0L,cityInput.getText(),voivodeshipInput.getText());
+        HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+        httpCon.setRequestProperty("Content-Type", "application/json; charset=utf8");
+        httpCon.setDoOutput(true);
+        httpCon.setRequestMethod("POST");
+        OutputStream os = httpCon.getOutputStream();
+        OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8);
+        osw.write(location.toAddString());
+        osw.flush();
+        osw.close();
+        os.close();
+        int status = httpCon.getResponseCode();
+        System.out.println(status);
     }
 
 }

@@ -1,7 +1,6 @@
 module com.example.repairingcompanyadmin {
     requires javafx.controls;
     requires javafx.fxml;
-
     requires org.controlsfx.controls;
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.databind;

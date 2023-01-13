@@ -17,16 +17,26 @@ public record Company(
 ) {
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Company{");
-        sb.append("id=").append(id);
-        sb.append(", companyName='").append(companyName).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", visits=").append(visits);
-        sb.append(", location=").append(location);
-        sb.append(", phoneNumber='").append(phoneNumber).append('\'');
-        sb.append(", street='").append(street).append('\'');
-        sb.append(", mail='").append(mail).append('\'');
-        sb.append('}');
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"companyId\": ").append(id);
+        sb.append(", \"companyName\": \"").append(companyName).append('\"');
+        sb.append(", \"description\": \"").append(description).append('\"');
+        sb.append(", \"mail\": \"").append(mail).append('\"');
+        sb.append(", \"phoneNumber\": \"").append(phoneNumber).append('\"');
+        sb.append(", \"street\": \"").append(street).append('\"');
+        sb.append(", \"locationId\": ").append(location.id());
+        sb.append("}");
+        return sb.toString();
+    }
+    public String toStringWithoutId() {
+        final StringBuilder sb = new StringBuilder("{");
+        sb.append("\"companyName\": \"").append(companyName).append('\"');
+        sb.append(", \"description\": \"").append(description).append('\"');
+        sb.append(", \"mail\": \"").append(mail).append('\"');
+        sb.append(", \"phoneNumber\": \"").append(phoneNumber).append('\"');
+        sb.append(", \"street\": \"").append(street).append('\"');
+        sb.append(", \"locationId\": ").append(location.id());
+        sb.append("}");
         return sb.toString();
     }
 }

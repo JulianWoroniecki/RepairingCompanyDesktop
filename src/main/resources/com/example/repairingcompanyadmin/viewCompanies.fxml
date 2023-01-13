@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="menu" stylesheets="@AddCompany.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.repairingcompanyadmin.ViewCompaniesController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="menu" stylesheets="@AddCompany.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.repairingcompanyadmin.ViewCompaniesController">
    <children>
       <SplitPane VBox.vgrow="ALWAYS">
          <items>
@@ -63,11 +63,6 @@
                            </VBox.margin>
                         </Button>
                         <Button fx:id="viewCategoriesButton" layoutX="15.0" layoutY="132.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="60.0" mnemonicParsing="false" onAction="#viewCategories" prefHeight="9999.0" text="%vCtg">
-                           <VBox.margin>
-                              <Insets top="5.0" />
-                           </VBox.margin>
-                        </Button>
-                        <Button fx:id="editCategoriesButton" layoutX="15.0" layoutY="249.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="60.0" mnemonicParsing="false" onAction="#editCategories" prefHeight="9999.0" text="%eCtg">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>

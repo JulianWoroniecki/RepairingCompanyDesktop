@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class JSONApi<T> {
@@ -48,6 +49,13 @@ public class JSONApi<T> {
         return result;
     }
 
+    public String deleteValue() throws IOException {
+        URL url = new URL(this.url);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod(this.httpMethod);
+        connection.getResponseCode();
+        return Integer.toString(connection.getResponseCode());
+    }
     public String prettifyJSON(T obj) throws JsonProcessingException {
         return this.mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
     }

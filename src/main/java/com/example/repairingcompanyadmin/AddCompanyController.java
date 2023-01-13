@@ -1,10 +1,10 @@
 package com.example.repairingcompanyadmin;
 
+import com.example.repairingcompanyadmin.dto.Company;
+import com.example.repairingcompanyadmin.dto.Location;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -17,123 +17,106 @@ import java.util.ResourceBundle;
 
 public class AddCompanyController {
 
-    private ResourceBundle bundle = ResourceBundle.getBundle("Language");
+    private final ResourceBundle bundle = ResourceBundle.getBundle("Language");
     @FXML
-    private Button addCompanyButton;
+    private ComboBox<String> locations;
 
     @FXML
-    private Label addCompanyTitle;
+    private TextField descriptionInput;
+
 
     @FXML
-    private Button addLocalisationButton;
+    private TextField emailInput;
 
     @FXML
-    private Button editCategoriesButton;
+    private TextField nameInput;
 
     @FXML
-    private Button editCompanyButton;
+    private TextField phoneInput;
 
     @FXML
-    private Button editLocalisationButton;
+    private TextField sInput;
 
+    Location[] locationsList;
     @FXML
-    private Button editVisitsButton;
-
-    @FXML
-    private ToggleButton langENGButton;
-
-    @FXML
-    private ToggleButton langPLButton;
-
-    @FXML
-    private Button viewCategoriesButton;
-
-    @FXML
-    private Button viewCompaniesButton;
-
-    @FXML
-    private Button viewLocalisationsButton;
-
-    @FXML
-    private Button viewVisitsButton;
-
-    @FXML
-    void addCompany(ActionEvent event) throws IOException {
+    void addCompany() throws IOException {
         StageSetter.buildStage("AddCompany.fxml",bundle.getString("aC"),bundle);
     }
 
     @FXML
-    void addLocalisation(ActionEvent event) throws IOException {
+    void addLocalisation() throws IOException {
         StageSetter.buildStage("AddLocalisation.fxml",bundle.getString("aL"),bundle);
     }
 
     @FXML
-    void editCategories(ActionEvent event) throws IOException {
-        StageSetter.buildStage("EditCategories.fxml",bundle.getString("eCtg"),bundle);
-    }
-
-    @FXML
-    void editCompany(ActionEvent event) throws IOException {
+    void editCompany() throws IOException {
         StageSetter.buildStage("EditCompany.fxml",bundle.getString("eCmp"),bundle);
     }
 
     @FXML
-    void editLocalisation(ActionEvent event) throws IOException {
+    void editLocalisation() throws IOException {
         StageSetter.buildStage("EditLocalisation.fxml",bundle.getString("eL"),bundle);
     }
 
     @FXML
-    void editVisits(ActionEvent event) throws IOException {
+    void editVisits() throws IOException {
         StageSetter.buildStage("EditVisits.fxml",bundle.getString("eV"),bundle);
     }
 
     @FXML
-    void langENG(ActionEvent event) throws IOException {
-        Locale.setDefault(new Locale("ang"));
+    void langENG() throws IOException {
+        Locale.setDefault(new Locale("en_US"));
         StageSetter.buildStage("AddCompany.fxml",bundle.getString("aC"),bundle);
     }
 
     @FXML
-    void langPL(ActionEvent event) throws IOException {
+    void langPL() throws IOException {
         Locale.setDefault(new Locale("pl"));
         StageSetter.buildStage("AddCompany.fxml",bundle.getString("aC"),bundle);
     }
 
     @FXML
-    void viewCategories(ActionEvent event) throws IOException {
+    void viewCategories() throws IOException {
         StageSetter.buildStage("viewCategories.fxml",bundle.getString("vCtg"),bundle);
     }
 
     @FXML
-    void viewCompanies(ActionEvent event) throws IOException {
+    void viewCompanies() throws IOException {
         StageSetter.buildStage("viewCompanies.fxml",bundle.getString("vCmp"),bundle);
     }
 
     @FXML
-    void viewLocalisations(ActionEvent event) throws IOException {
+    void viewLocalisations() throws IOException {
         StageSetter.buildStage("viewLocalisations.fxml",bundle.getString("vL"),bundle);
     }
 
     @FXML
-    void viewVisits(ActionEvent event) throws IOException {
+    void viewVisits() throws IOException {
         StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
     }
 
     @FXML
-    void submitCompany(ActionEvent event) throws IOException {
+    void initialize() throws IOException {
+        JSONApi api = new JSONApi("http://localhost:8080/api/v1/location/all","GET", Location[].class);
+        locationsList = (Location[]) api.readValue();
+        for (Location location : locationsList){
+            locations.getItems().add(location.city());
+        }
+    }
+    @FXML
+    void submitCompany() throws IOException {
         URL url = new URL("http://localhost:8080/api/v1/company/add");
+        Company company = new Company(null,nameInput.getText(),descriptionInput.getText(),null,locationsList[locations.getSelectionModel().getSelectedIndex()],phoneInput.getText(),sInput.getText(),emailInput.getText());
         HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
         httpCon.setRequestProperty("Content-Type", "application/json; charset=utf8");
         httpCon.setDoOutput(true);
         httpCon.setRequestMethod("POST");
         OutputStream os = httpCon.getOutputStream();
         OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8);
-        // TODO: replace values with property getters.
-        osw.write("{\"companyName\": \"test\", \"description\": \"testDesc\", \"mail\": \"testMail\", \"phoneNumber\": \"6457456\", \"street\": \"testStreet\", \"locationId\": 3}");
+        osw.write(company.toStringWithoutId());
         osw.flush();
         osw.close();
         os.close();
-        int status = httpCon.getResponseCode();
-        System.out.println(status);
+        System.out.println(httpCon.getResponseCode());
     }
 }

@@ -1,73 +1,35 @@
 package com.example.repairingcompanyadmin;
 
-import javafx.event.ActionEvent;
+import com.example.repairingcompanyadmin.dto.Company;
+import com.example.repairingcompanyadmin.dto.Location;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class EditCompanyController {
 
-    private ResourceBundle bundle = ResourceBundle.getBundle("Language");
-    @FXML
-    private Button addCompanyButton;
+    private final ResourceBundle bundle = ResourceBundle.getBundle("Language");
 
-    @FXML
-    private Button addLocalisationButton1;
-    @FXML
-    private Button deleteCompanyButton;
     @FXML
     private ComboBox<String> companiesList;
-    @FXML
-    private Label companyDescription;
 
     @FXML
-    private Label companyEmail;
-
-    @FXML
-    private Label companyLocation;
-
-    @FXML
-    private Label companyName;
-
-    @FXML
-    private Label companyNumber;
-
-    @FXML
-    private Label companyStreet;
-
-    @FXML
-    private Label companyTitle;
+    private ComboBox<String> companyListView;
 
     @FXML
     private TextField descriptionInput;
 
-    @FXML
-    private Button editCategoriesButton1;
-
-    @FXML
-    private Button editCompanyButton1;
-
-    @FXML
-    private Button editLocalisationButton1;
-
-    @FXML
-    private Button editVisitsButton1;
 
     @FXML
     private TextField emailInput;
-
-    @FXML
-    private ToggleButton langENGButton;
-
-    @FXML
-    private ToggleButton langPLButton;
-
-    @FXML
-    private VBox locationList;
 
     @FXML
     private TextField nameInput;
@@ -75,89 +37,140 @@ public class EditCompanyController {
     @FXML
     private TextField phoneInput;
 
-    @FXML
-    private Button saveCompanyChangesButton;
 
     @FXML
     private TextField streetInput;
 
-    @FXML
-    private Button viewCategoriesButton1;
+    Company[] companies;
+    Location[] locations;
 
+    Company company;
     @FXML
-    private Button viewCompaniesButton;
-
-    @FXML
-    private Button viewLocalisationsButton1;
-
-    @FXML
-    private Button viewVisitsButton1;
-
-    @FXML
-    void addCompany(ActionEvent event) throws IOException {
+    void addCompany() throws IOException {
         StageSetter.buildStage("AddCompany.fxml",bundle.getString("aC"),bundle);
     }
 
     @FXML
-    void addLocalisation(ActionEvent event) throws IOException {
+    void addLocalisation() throws IOException {
         StageSetter.buildStage("AddLocalisation.fxml",bundle.getString("aL"),bundle);
     }
-
     @FXML
-    void deleteCompany(ActionEvent event) {
-
-    }
-
-    @FXML
-    void editCategories(ActionEvent event) throws IOException {
-        StageSetter.buildStage("EditCategories.fxml",bundle.getString("eCtg"),bundle);
-    }
-
-    @FXML
-    void editCompany(ActionEvent event) throws IOException {
+    void editCompany() throws IOException {
         StageSetter.buildStage("EditCompany.fxml",bundle.getString("eCmp"),bundle);
     }
 
     @FXML
-    void editLocalisation(ActionEvent event) throws IOException {
+    void editLocalisation() throws IOException {
         StageSetter.buildStage("EditLocalisation.fxml",bundle.getString("eL"),bundle);
     }
 
     @FXML
-    void editVisits(ActionEvent event) throws IOException {
+    void editVisits() throws IOException {
         StageSetter.buildStage("EditVisits.fxml",bundle.getString("eV"),bundle);
     }
 
     @FXML
-    void langENG(ActionEvent event) throws IOException {
-        Locale.setDefault(new Locale("ang"));
+    void langENG() throws IOException {
+        Locale.setDefault(new Locale("en_US"));
         StageSetter.buildStage("EditCompany.fxml",bundle.getString("eCmp"),bundle);
     }
 
     @FXML
-    void langPL(ActionEvent event) throws IOException {
+    void langPL() throws IOException {
         Locale.setDefault(new Locale("pl"));
         StageSetter.buildStage("EditCompany.fxml",bundle.getString("eCmp"),bundle);
     }
 
     @FXML
-    void viewCategories(ActionEvent event) throws IOException {
+    void viewCategories() throws IOException {
         StageSetter.buildStage("viewCategories.fxml",bundle.getString("vCtg"),bundle);
     }
 
     @FXML
-    void viewCompanies(ActionEvent event) throws IOException {
+    void viewCompanies() throws IOException {
         StageSetter.buildStage("viewCompanies.fxml",bundle.getString("vCmp"),bundle);
     }
 
     @FXML
-    void viewLocalisations(ActionEvent event) throws IOException {
+    void viewLocalisations() throws IOException {
         StageSetter.buildStage("viewLocalisations.fxml",bundle.getString("vL"),bundle);
     }
 
     @FXML
-    void viewVisits(ActionEvent event) throws IOException {
+    void viewVisits() throws IOException {
         StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
     }
 
+    @FXML
+    void deleteCompany() throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(bundle.getString("conf"));
+        alert.setContentText(bundle.getString("askConf"));
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get() == ButtonType.OK){
+            JSONApi api = new JSONApi("http://localhost:8080/api/v1/company/delete/"+company.id(), "DELETE", String.class);
+            api.deleteValue();
+            load();
+        }
+    }
+    private  void load() throws IOException {
+        clear();
+        JSONApi api = new JSONApi("http://localhost:8080/api/v1/company/all", "GET", Company[].class);
+        companies= (Company[]) api.readValue();
+        for (Company company : companies){
+            companiesList.getItems().add(company.companyName());
+        }
+        JSONApi api2 = new JSONApi("http://localhost:8080/api/v1/location/all", "GET", Location[].class);
+        locations=(Location[]) api2.readValue();
+        for (Location location : locations){
+            companyListView.getItems().add(location.city());
+        }
+    }
+    private void clear(){
+        companiesList.getItems().clear();
+        companyListView.getItems().clear();
+        companiesList.getSelectionModel().clearSelection();
+        nameInput.clear();
+        phoneInput.clear();
+        emailInput.clear();
+        descriptionInput.clear();
+        streetInput.clear();
+    }
+    @FXML
+    void initialize() throws IOException {
+        load();
+    }
+    @FXML
+    void loadData() {
+        if(!companiesList.getSelectionModel().isEmpty()) {
+            int indeks = companiesList.getSelectionModel().getSelectedIndex();
+            company = companies[indeks];
+            nameInput.setText(company.companyName());
+            phoneInput.setText(company.phoneNumber());
+            emailInput.setText(company.mail());
+            descriptionInput.setText(company.description());
+            streetInput.setText(company.street());
+            String lokacja = company.location().city();
+            companyListView.getSelectionModel().select(lokacja);
+        }
+    }
+
+    @FXML
+    void saveChangesToCompany() throws IOException {
+        int indeks=companiesList.getSelectionModel().getSelectedIndex();
+        Company company1=new Company(companies[indeks].id(),nameInput.getText(),descriptionInput.getText(),companies[indeks].visits(),companies[indeks].location(),phoneInput.getText(),streetInput.getText(),emailInput.getText());
+        URL url = new URL("http://localhost:8080/api/v1/company/update");
+        HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+        httpCon.setRequestProperty("Content-Type", "application/json; charset=utf8");
+        httpCon.setDoOutput(true);
+        httpCon.setRequestMethod("PUT");
+        OutputStream os = httpCon.getOutputStream();
+        OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8);
+        System.out.println(company1);
+        System.out.println(httpCon.getResponseCode());
+        osw.write(company1.toString());
+        osw.flush();
+        osw.close();
+        os.close();
+    }
 }

@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="menu" stylesheets="@AddCompany.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.repairingcompanyadmin.AddLocalisationController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" styleClass="menu" stylesheets="@AddCompany.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.repairingcompanyadmin.AddLocalisationController">
    <children>
       <SplitPane VBox.vgrow="ALWAYS">
          <items>
@@ -63,11 +63,6 @@
                            </VBox.margin>
                         </Button>
                         <Button fx:id="viewCategoriesButton" layoutX="15.0" layoutY="132.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="60.0" mnemonicParsing="false" onAction="#viewCategories" prefHeight="9999.0" text="%vCtg">
-                           <VBox.margin>
-                              <Insets top="5.0" />
-                           </VBox.margin>
-                        </Button>
-                        <Button fx:id="editCategoriesButton" layoutX="15.0" layoutY="249.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="30.0" minWidth="60.0" mnemonicParsing="false" onAction="#editCategories" prefHeight="9999.0" text="%eCtg">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
@@ -136,7 +131,7 @@
                         </AnchorPane>
                         <VBox prefHeight="139.0" prefWidth="307.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <children>
-                              <Button fx:id="addButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="15.0" mnemonicParsing="false" text="%ad">
+                              <Button fx:id="addButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="40.0" minWidth="15.0" mnemonicParsing="false" onAction="#submitLocation" text="%ad">
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="5.0" right="15.0" top="20.0" />
                                  </VBox.margin>
