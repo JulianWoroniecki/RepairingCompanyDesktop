@@ -80,7 +80,7 @@ public class AddLocalisationController {
     void submitLocation() throws IOException {
         Location location = new Location(0L,cityInput.getText(),voivodeshipInput.getText());
         Api api = new Api();
-        api.update("http://localhost:8080/api/v1/location/add","PUT",location.toAddString());
+        api.update("https://repairingcompany.azurewebsites.net/api/v1/location/add","PUT",location.toAddString());
     }
 
 }

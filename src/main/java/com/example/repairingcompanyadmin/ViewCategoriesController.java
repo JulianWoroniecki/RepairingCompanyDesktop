@@ -77,11 +77,12 @@ public class ViewCategoriesController {
 
     @FXML
     void initialize() throws IOException {
-        JSONApi api = new JSONApi("http://localhost:8080/api/v1/visit/category/all", "GET", VisitCategory[].class);
+        JSONApi api = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/visit/category/all", "GET", VisitCategory[].class);
         VisitCategory[] visitCategories = (VisitCategory[]) api.readValue();
 //        categoriesList.setText(api.prettifyJSON(visitCategories));
         for (VisitCategory category : visitCategories){
-            categoriesList.appendText("opis: " + category.humanReadableLabel() + "\n czas trwania: " + category.durationHours() + "h \n \n");
+//            categoriesList.appendText("opis: " + category.humanReadableLabel() + "\n czas trwania: " + category.durationHours() + "h \n \n");
+            categoriesList.appendText( category.id().toString() + ". " + category.type() + "\n \n");
         }
         categoriesList.setEditable(false);
     }

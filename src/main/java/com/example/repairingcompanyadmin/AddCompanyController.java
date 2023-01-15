@@ -95,9 +95,18 @@ public class AddCompanyController {
         StageSetter.buildStage("ViewVisits.fxml",bundle.getString("vV"),bundle);
     }
 
+    private void clear(){
+        nameInput.clear();
+        phoneInput.clear();
+        emailInput.clear();
+        descriptionInput.clear();
+        sInput.clear();
+        locations.getItems().clear();
+    }
+
     @FXML
     void initialize() throws IOException {
-        JSONApi api = new JSONApi("http://localhost:8080/api/v1/location/all","GET", Location[].class);
+        JSONApi api = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/location/all","GET", Location[].class);
         locationsList = (Location[]) api.readValue();
         for (Location location : locationsList){
             locations.getItems().add(location.city());
@@ -107,6 +116,7 @@ public class AddCompanyController {
     void submitCompany() throws IOException {
         Company company = new Company(null,nameInput.getText(),descriptionInput.getText(),null,locationsList[locations.getSelectionModel().getSelectedIndex()],phoneInput.getText(),sInput.getText(),emailInput.getText());
         Api api = new Api();
-        api.update("http://localhost:8080/api/v1/company/add","POST",company.toStringWithoutId());
+        api.update("https://repairingcompany.azurewebsites.net/api/v1/company/add","POST",company.toStringWithoutId());
+        clear();
     }
 }

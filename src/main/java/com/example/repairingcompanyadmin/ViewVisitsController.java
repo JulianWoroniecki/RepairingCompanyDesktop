@@ -73,15 +73,12 @@ public class ViewVisitsController {
 
     @FXML
     void initialize() throws IOException {
-        JSONApi api = new JSONApi("http://localhost:8080/api/v1/visit/all", "GET", Visit[].class);
+        JSONApi api = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/visit/all", "GET", Visit[].class);
         Visit[] visits = (Visit[]) api.readValue();
         for (Visit visit : visits){
-            JSONApi api2 = new JSONApi("http://localhost:8080/api/v1/company/"+visit.id(), "GET", Company.class);
-            Company company = (Company) api2.readValue();
             visitsList.appendText(visit.id().toString() + ". " +
                     visit.description() + "\n" +
                     bundle.getString("date") + ": "+ visit.date() + "\n" +
-                    bundle.getString("cmp") + ": "+ company.companyName() + "\n" +
                     bundle.getString("sDate") + ": "+ visit.startTime() + "\n" +
                     bundle.getString("eDate") + ": "+ visit.endTime() + "\n\n"
             );

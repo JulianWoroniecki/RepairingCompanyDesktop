@@ -94,7 +94,7 @@ public class EditLocalisationController {
         alert.setContentText(bundle.getString("askConf"));
         Optional<ButtonType> result = alert.showAndWait();
         if(result.get() == ButtonType.OK){
-            JSONApi api = new JSONApi("http://localhost:8080/api/v1/location/delete/"+location.id(), "DELETE", String.class);
+            JSONApi api = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/location/delete/"+location.id(), "DELETE", String.class);
             api.deleteValue();
             load();
         }
@@ -104,11 +104,12 @@ public class EditLocalisationController {
         int indeks=localisationsList.getSelectionModel().getSelectedIndex();
         Location location1=new Location(locations[indeks].id(),cityInput.getText(),vvshipInput.getText());
         Api api = new Api();
-        api.update("http://localhost:8080/api/v1/location/update","PUT",location1.toAddString());
+        api.update("https://repairingcompany.azurewebsites.net/api/v1/location/update","PUT",location1.toAddString());
+        load();
     }
     private void load() throws IOException {
         clear();
-        JSONApi api = new JSONApi("http://localhost:8080/api/v1/location/all","GET", Location[].class);
+        JSONApi api = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/location/all","GET", Location[].class);
         locations = (Location[]) api.readValue();
         for (Location location : locations){
             localisationsList.getItems().add(location.city());

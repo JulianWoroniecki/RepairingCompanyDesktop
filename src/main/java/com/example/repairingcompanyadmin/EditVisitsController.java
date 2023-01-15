@@ -94,7 +94,7 @@ public class EditVisitsController {
         alert.setContentText(bundle.getString("askConf"));
         Optional<ButtonType> result = alert.showAndWait();
         if(result.get() == ButtonType.OK){
-            JSONApi api = new JSONApi("http://localhost:8080/api/v1/visit/delete/"+visit.id(), "DELETE", String.class);
+            JSONApi api = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/visit/delete/"+visit.id(), "DELETE", String.class);
             api.deleteValue();
             load();
         }
@@ -102,15 +102,16 @@ public class EditVisitsController {
     @FXML
     void saveVisitChanges() throws IOException {
         int indeks=visitsList.getSelectionModel().getSelectedIndex();
-        JSONApi api2 = new JSONApi("http://localhost:8080/api/v1/company/"+visit.id(), "GET", Company.class);
+        JSONApi api2 = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/company/"+visit.id(), "GET", Company.class);
         Company company = (Company) api2.readValue();
         Visit visit = new Visit(visits[indeks].id(),company,visits[indeks].date(), LocalTime.parse(startingInput.getText()),descriptionInput.getText(),visits[indeks].category(),LocalTime.parse(endingInput.getText()));
         Api api = new Api();
-        api.update("http://localhost:8080/api/v1/visit/update","PUT",visit.toString());
+        api.update("https://repairingcompany.azurewebsites.net/api/v1/visit/update","PUT",visit.toString());
+        load();
     }
     private void load() throws IOException {
         clear();
-        JSONApi api = new JSONApi("http://localhost:8080/api/v1/visit/all","GET", Visit[].class);
+        JSONApi api = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/visit/all","GET", Visit[].class);
         visits = (Visit[]) api.readValue();
         for (Visit visit: visits){
             visitsList.getItems().add(visit.description());

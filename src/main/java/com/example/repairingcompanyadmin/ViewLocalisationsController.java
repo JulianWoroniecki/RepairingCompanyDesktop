@@ -77,7 +77,7 @@ public class ViewLocalisationsController {
 
     @FXML
     void initialize() throws IOException {
-        JSONApi api = new JSONApi("http://localhost:8080/api/v1/location/all", "GET", Location[].class);
+        JSONApi api = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/location/all", "GET", Location[].class);
         Location[] locations = (Location[]) api.readValue();
         for (Location location : locations){
             localisationList.appendText(location.id().toString() + ". " +

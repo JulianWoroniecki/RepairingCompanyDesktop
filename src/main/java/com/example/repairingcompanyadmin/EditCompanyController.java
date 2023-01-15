@@ -108,19 +108,19 @@ public class EditCompanyController {
         alert.setContentText(bundle.getString("askConf"));
         Optional<ButtonType> result = alert.showAndWait();
         if(result.get() == ButtonType.OK){
-            JSONApi api = new JSONApi("http://localhost:8080/api/v1/company/delete/"+company.id(), "DELETE", String.class);
+            JSONApi api = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/company/delete/"+company.id(), "DELETE", String.class);
             api.deleteValue();
             load();
         }
     }
     private  void load() throws IOException {
         clear();
-        JSONApi api = new JSONApi("http://localhost:8080/api/v1/company/all", "GET", Company[].class);
+        JSONApi api = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/company/all", "GET", Company[].class);
         companies= (Company[]) api.readValue();
         for (Company company : companies){
             companiesList.getItems().add(company.companyName());
         }
-        JSONApi api2 = new JSONApi("http://localhost:8080/api/v1/location/all", "GET", Location[].class);
+        JSONApi api2 = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/location/all", "GET", Location[].class);
         locations=(Location[]) api2.readValue();
         for (Location location : locations){
             companyListView.getItems().add(location.city());
@@ -161,7 +161,8 @@ public class EditCompanyController {
         int indeks=companiesList.getSelectionModel().getSelectedIndex();
         Company company1=new Company(companies[indeks].id(),nameInput.getText(),descriptionInput.getText(),companies[indeks].visits(),companies[indeks].location(),phoneInput.getText(),streetInput.getText(),emailInput.getText());
         Api api = new Api();
-        api.update("http://localhost:8080/api/v1/company/update","PUT",company1.toString());
+        api.update("https://repairingcompany.azurewebsites.net/api/v1/company/update","PUT",company1.toString());
+        load();
         System.out.println(company1);
     }
 }

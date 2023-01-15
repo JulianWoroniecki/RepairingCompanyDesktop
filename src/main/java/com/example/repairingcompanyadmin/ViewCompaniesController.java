@@ -72,7 +72,7 @@ public class ViewCompaniesController {
 
     @FXML
     void initialize() throws IOException {
-        JSONApi api = new JSONApi("http://localhost:8080/api/v1/company/all", "GET", Company[].class);
+        JSONApi api = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/company/all", "GET", Company[].class);
         Company[] companies = (Company[]) api.readValue();
         for (Company company : companies){
             companiesList.appendText(company.id().toString() + ". " +
