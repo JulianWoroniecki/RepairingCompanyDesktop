@@ -56,7 +56,4 @@ public class JSONApi<T> {
         connection.getResponseCode();
         return Integer.toString(connection.getResponseCode());
     }
-    public String prettifyJSON(T obj) throws JsonProcessingException {
-        return this.mapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
-    }
 }
