@@ -139,7 +139,6 @@ public class EditVisitsController {
         load();
         descriptionInput.setEditable(false);
         dateInput.setEditable(false);
-        System.out.println(visits[0].description());
     }
     @FXML
     void loadData(){

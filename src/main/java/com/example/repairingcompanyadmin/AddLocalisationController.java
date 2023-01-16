@@ -78,9 +78,9 @@ public class AddLocalisationController {
     }
     @FXML
     void submitLocation() throws IOException {
-        Location location = new Location(0L,cityInput.getText(),voivodeshipInput.getText());
+        Location location = new Location(3L,cityInput.getText(),voivodeshipInput.getText());
         Api api = new Api();
-        api.update("https://repairingcompany.azurewebsites.net/api/v1/location/add","PUT",location.toAddString());
+        System.out.println(api.update("https://repairingcompany.azurewebsites.net/api/v1/location/add","POST",location.toAddString()));
     }
 
 }
