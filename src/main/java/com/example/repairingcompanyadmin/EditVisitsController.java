@@ -29,6 +29,7 @@ public class EditVisitsController {
     private TextField startingInput;
     Visit[] visits;
 
+    Company[] companies;
     Visit visit;
     @FXML
     void addCompany() throws IOException {
@@ -101,13 +102,19 @@ public class EditVisitsController {
     }
     @FXML
     void saveVisitChanges() throws IOException {
-        int indeks=visitsList.getSelectionModel().getSelectedIndex();
-        JSONApi api2 = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/company/"+visit.id(), "GET", Company.class);
-        Company company = (Company) api2.readValue();
-        Visit visit = new Visit(visits[indeks].id(),company,visits[indeks].date(), LocalTime.parse(startingInput.getText()),descriptionInput.getText(),visits[indeks].category(),LocalTime.parse(endingInput.getText()));
-        Api api = new Api();
-        api.update("https://repairingcompany.azurewebsites.net/api/v1/visit/update","PUT",visit.toString());
-        load();
+        if(validate()) {
+            int indeks = visitsList.getSelectionModel().getSelectedIndex();
+            JSONApi api2 = new JSONApi("https://repairingcompany.azurewebsites.net/api/v1/company/all", "GET", Company[].class);
+            companies = (Company[]) api2.readValue();
+            Visit visit = new Visit(visits[indeks].id(), companies[0], visits[indeks].date(), LocalTime.parse(startingInput.getText()), descriptionInput.getText(), visits[indeks].category(), LocalTime.parse(endingInput.getText()));
+            Api api = new Api();
+            api.update("https://repairingcompany.azurewebsites.net/api/v1/visit/update", "PUT", visit.toString());
+            load();
+        }
+        else{
+            InfoWindow window = new InfoWindow();
+            window.text(bundle.getString("error"), bundle.getString("errorHour"), Alert.AlertType.ERROR);
+        }
     }
     private void load() throws IOException {
         clear();
@@ -144,6 +151,9 @@ public class EditVisitsController {
             endingInput.setText(visit.endTime().toString());
             dateInput.setValue(visit.date());
         }
+    }
+    private boolean validate(){
+        return startingInput.getText().matches("^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$") && endingInput.getText().matches("^(2[0-3]|[01]?[0-9]):([0-5]?[0-9])$");
     }
 }
 

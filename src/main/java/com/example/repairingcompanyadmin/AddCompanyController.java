@@ -114,9 +114,18 @@ public class AddCompanyController {
     }
     @FXML
     void submitCompany() throws IOException {
-        Company company = new Company(null,nameInput.getText(),descriptionInput.getText(),null,locationsList[locations.getSelectionModel().getSelectedIndex()],phoneInput.getText(),sInput.getText(),emailInput.getText());
-        Api api = new Api();
-        api.update("https://repairingcompany.azurewebsites.net/api/v1/company/add","POST",company.toStringWithoutId());
-        clear();
+        if(validate()) {
+            Company company = new Company(null,nameInput.getText(),descriptionInput.getText(),null,locationsList[locations.getSelectionModel().getSelectedIndex()],phoneInput.getText(),sInput.getText(),emailInput.getText());
+            Api api = new Api();
+            api.update("https://repairingcompany.azurewebsites.net/api/v1/company/add","POST",company.toStringWithoutId());
+            clear();
+        }
+        else{
+            InfoWindow window = new InfoWindow();
+            window.text(bundle.getString("error"), bundle.getString("errorMsg"), Alert.AlertType.ERROR);
+        }
+    }
+    private boolean validate(){
+        return phoneInput.getText().matches("^\\d\\d\\d\\d\\d\\d\\d\\d\\d$") && emailInput.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
     }
 }

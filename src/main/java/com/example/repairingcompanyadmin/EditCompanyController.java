@@ -158,11 +158,19 @@ public class EditCompanyController {
 
     @FXML
     void saveChangesToCompany() throws IOException {
-        int indeks=companiesList.getSelectionModel().getSelectedIndex();
-        Company company1=new Company(companies[indeks].id(),nameInput.getText(),descriptionInput.getText(),companies[indeks].visits(),companies[indeks].location(),phoneInput.getText(),streetInput.getText(),emailInput.getText());
-        Api api = new Api();
-        api.update("https://repairingcompany.azurewebsites.net/api/v1/company/update","PUT",company1.toString());
-        load();
-        System.out.println(company1);
+        if(validate()) {
+            int indeks = companiesList.getSelectionModel().getSelectedIndex();
+            Company company1 = new Company(companies[indeks].id(), nameInput.getText(), descriptionInput.getText(), companies[indeks].visits(), companies[indeks].location(), phoneInput.getText(), streetInput.getText(), emailInput.getText());
+            Api api = new Api();
+            api.update("https://repairingcompany.azurewebsites.net/api/v1/company/update", "PUT", company1.toString());
+            load();
+        }
+        else{
+            InfoWindow window = new InfoWindow();
+            window.text(bundle.getString("error"), bundle.getString("errorMsg"), Alert.AlertType.ERROR);
+        }
+    }
+    private boolean validate(){
+        return phoneInput.getText().matches("^\\d\\d\\d\\d\\d\\d\\d\\d\\d$") && emailInput.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
     }
 }
